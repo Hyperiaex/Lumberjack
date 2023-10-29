@@ -36,6 +36,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import net.doubledoordev.lumberjack.util.BlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -47,8 +48,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+
 
 import net.doubledoordev.lumberjack.LumberjackConfig;
 
@@ -102,7 +105,10 @@ public class ItemLumberAxe extends AxeItem
     @Override
     public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entityLiving)
     {
-        return stack != ItemStack.EMPTY && (Material.LEAVES.equals(state.getMaterial()) || super.mineBlock(stack, level, state, pos, entityLiving));
+
+
+
+        return stack != ItemStack.EMPTY && (BlockTypes.isLeaves(state) || super.mineBlock(stack, level, state, pos, entityLiving));
     }
 
     @Nonnull

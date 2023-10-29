@@ -45,7 +45,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -147,7 +146,7 @@ public class EventHandler
                     if (nextMap.containsEntry(uuid, newPoint) || pointMap.containsEntry(uuid, newPoint)) continue;
 
                     BlockState newBlockState = event.getLevel().getBlockState(newPoint);
-                    boolean isLeaves = LumberjackConfig.GENERAL.leaves.get() && newBlockState.getMaterial() == Material.LEAVES;
+                    boolean isLeaves = LumberjackConfig.GENERAL.leaves.get() && BlockTypes.isLeaves(newBlockState);
 
                     // Mode 0: leaves or same blocktype
                     // Mode 1: leaves or all wood
@@ -165,12 +164,10 @@ public class EventHandler
         if (state.is(ignoreTag))
             return false;
 
-        Material material = state.getMaterial();
-
-        if (LumberjackConfig.GENERAL.useMaterials.get() && (material == Material.WOOD || material == Material.NETHER_WOOD))
+        if (LumberjackConfig.GENERAL.useMaterials.get() && (BlockTypes.isAnyWood(state)))
             return true;
 
-        if (LumberjackConfig.GENERAL.leaves.get() && (material == Material.LEAVES))
+        if (LumberjackConfig.GENERAL.leaves.get() && (BlockTypes.isLeaves(state)))
             return true;
 
         return state.is(destroyTag);
